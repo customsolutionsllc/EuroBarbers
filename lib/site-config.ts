@@ -21,7 +21,7 @@ export const siteConfig = {
   timezone: "America/New_York",
   // Open daily 10 AM–7 PM (placeholder; confirm exact days/hours).
   hoursLabel: "Open daily 10 AM – 7 PM",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://eurobarbers.example.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://eurobarbers.com",
   // SEO service areas (not separate locations).
   serviceAreas: [
     { label: "Columbus, OH", href: "/columbus-oh-barber-shop" },
