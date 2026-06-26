@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 42 28% 96%;
+  --foreground: 240 6% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 6% 8%;
+  --primary: 40 64% 45%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 12% 18%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 39 22% 90%;
+  --muted-foreground: 240 5% 34%;
+  --accent: 160 26% 30%;
+  --accent-foreground: 0 0% 100%;
+  --border: 37 18% 78%;
+  --input: 37 18% 78%;
+  --ring: 40 64% 45%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.grain {
+  background-image:
+    linear-gradient(rgba(11, 11, 12, 0.68), rgba(11, 11, 12, 0.48)),
+    url("https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=2200&q=80");
+  background-position: center;
+  background-size: cover;
+}
+
+.section {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
