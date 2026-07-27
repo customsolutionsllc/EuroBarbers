@@ -50,7 +50,7 @@ export default function HomePage() {
         />
 
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-gold-200 sm:text-sm">
-          Columbus &amp; Dublin, Ohio
+          Columbus, Ohio
         </p>
 
         <h1 className="font-serif text-4xl font-semibold leading-tight tracking-normal sm:text-6xl">
