@@ -64,21 +64,21 @@ export default function HomePage() {
         </p>
 
         {/* Contact actions */}
-        <div className="mt-10 flex w-full max-w-md flex-col gap-4 sm:flex-row sm:justify-center">
+        <div className="mt-10 flex w-full max-w-2xl flex-col items-stretch gap-4 sm:flex-row sm:justify-center">
           <a
             href={siteConfig.phoneHref}
-            className="group inline-flex items-center justify-center gap-3 rounded-lg bg-gold-400 px-6 py-4 text-base font-semibold text-ink-900 shadow-lg transition hover:bg-gold-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-200"
+            className="group inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-lg bg-gold-400 px-8 py-4 text-base font-semibold text-ink-900 shadow-lg transition hover:bg-gold-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-200"
           >
-            <Phone className="h-5 w-5" />
+            <Phone className="h-5 w-5 shrink-0" />
             +1 (614) 900-6080
           </a>
           <a
             href={MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-3 rounded-lg border border-white/25 bg-white/5 px-6 py-4 text-base font-semibold text-white backdrop-blur-sm transition hover:border-gold-200/60 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-200"
+            className="group inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-lg border border-white/25 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition hover:border-gold-200/60 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-200"
           >
-            <MapPin className="h-5 w-5 text-gold-200" />
+            <MapPin className="h-5 w-5 shrink-0 text-gold-200" />
             7370 Sawmill Rd, Columbus, OH 43235
           </a>
         </div>
