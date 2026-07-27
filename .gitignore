@@ -43,3 +43,7 @@ next-env.d.ts
 # editor
 .idea
 *.swp
+.env*
+
+# local-only docs (never push)
+SITE_URLS.md

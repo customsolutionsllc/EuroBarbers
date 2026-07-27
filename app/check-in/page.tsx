@@ -27,7 +27,7 @@ export default async function CheckInPage() {
         you only need to be nearby.
       </p>
 
-      <div className="mt-10 max-w-2xl">
+      <div className="mt-10 max-w-4xl">
         {isOpen ? (
           <CheckInForm services={services} barbers={barbers} />
         ) : (

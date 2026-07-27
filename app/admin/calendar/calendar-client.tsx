@@ -36,7 +36,7 @@ export function CalendarClient() {
   }, []);
 
   return (
-    <div className="rounded-lg border bg-white p-4">
+    <div className="fc-modern rounded-2xl border bg-white p-4 shadow-sm">
       <FullCalendar
         plugins={[resourceTimeGridPlugin, interactionPlugin]}
         initialView="resourceTimeGridDay"
@@ -46,6 +46,11 @@ export function CalendarClient() {
           center: "title",
           right: "resourceTimeGridDay,resourceTimeGridWeek"
         }}
+        buttonText={{ today: "Today", week: "Week", day: "Day" }}
+        nowIndicator
+        expandRows
+        stickyHeaderDates
+        slotEventOverlap={false}
         resources={resources}
         events={events.map((event) => ({
           id: event.id,
@@ -56,6 +61,10 @@ export function CalendarClient() {
         }))}
         slotMinTime="08:00:00"
         slotMaxTime="20:00:00"
+        slotDuration="00:30:00"
+        slotLabelFormat={{ hour: "numeric", minute: "2-digit", meridiem: "short" }}
+        eventTimeFormat={{ hour: "numeric", minute: "2-digit", meridiem: "short" }}
+        dayHeaderFormat={{ weekday: "short", month: "short", day: "numeric" }}
         allDaySlot={false}
         height="auto"
       />

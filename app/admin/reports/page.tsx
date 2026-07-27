@@ -27,6 +27,22 @@ type Reports = {
 
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+const TZ = "America/New_York";
+
+function todayIso() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
+}
+
+function minusDays(iso: string, n: number) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - n);
+  return d.toISOString().slice(0, 10);
+}
+
+function isValidIso(value: string | undefined): value is string {
+  return !!value && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
 function Bar({ label, value, max }: { label: string; value: number; max: number }) {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
@@ -40,14 +56,90 @@ function Bar({ label, value, max }: { label: string; value: number; max: number 
   );
 }
 
-export default async function AdminReportsPage() {
+export default async function AdminReportsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ start?: string; end?: string }>;
+}) {
   await requireAdmin();
+  const sp = await searchParams;
+  const today = todayIso();
+  const end = isValidIso(sp.end) ? sp.end : today;
+  const start = isValidIso(sp.start) ? sp.start : minusDays(end, 29);
+
+  const presets = [
+    { label: "Last 7 days", start: minusDays(today, 6), end: today },
+    { label: "Last 30 days", start: minusDays(today, 29), end: today },
+    { label: "Last 90 days", start: minusDays(today, 89), end: today },
+    { label: "This year", start: `${today.slice(0, 4)}-01-01`, end: today }
+  ];
+
   const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.rpc("get_admin_reports", { p_start: null, p_end: null });
+  const { data } = await supabase.rpc("get_admin_reports", { p_start: start, p_end: end });
   const reports = data as Reports | null;
 
+  const rangeControls = (
+    <div className="space-y-3 rounded-lg border bg-white p-4">
+      <div className="flex flex-wrap gap-2">
+        {presets.map((p) => {
+          const active = p.start === start && p.end === end;
+          return (
+            <a
+              key={p.label}
+              href={`/admin/reports?start=${p.start}&end=${p.end}`}
+              className={
+                active
+                  ? "rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+                  : "rounded-md border px-3 py-2 text-sm font-medium hover:border-primary"
+              }
+            >
+              {p.label}
+            </a>
+          );
+        })}
+      </div>
+      <form method="get" className="flex flex-wrap items-end gap-3">
+        <label className="block">
+          <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">From</span>
+          <input
+            type="date"
+            name="start"
+            defaultValue={start}
+            max={today}
+            className="mt-1 block rounded-md border border-input bg-white px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">To</span>
+          <input
+            type="date"
+            name="end"
+            defaultValue={end}
+            max={today}
+            className="mt-1 block rounded-md border border-input bg-white px-3 py-2 text-sm"
+          />
+        </label>
+        <button
+          type="submit"
+          className="rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-ink-700"
+        >
+          Apply range
+        </button>
+      </form>
+    </div>
+  );
+
   if (!reports) {
-    return <p className="text-muted-foreground">No report data available yet.</p>;
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="font-serif text-2xl font-semibold">Reports</h2>
+          <p className="text-sm text-muted-foreground">{start} to {end}</p>
+        </div>
+        {rangeControls}
+        <p className="text-muted-foreground">No report data available for this range.</p>
+      </div>
+    );
   }
 
   const stats = [
@@ -73,7 +165,7 @@ export default async function AdminReportsPage() {
         <div>
           <h2 className="font-serif text-2xl font-semibold">Reports</h2>
           <p className="text-sm text-muted-foreground">
-            {reports.start} to {reports.end} (last 30 days)
+            {reports.start} to {reports.end}
           </p>
         </div>
         <div className="flex gap-2">
@@ -91,6 +183,8 @@ export default async function AdminReportsPage() {
           </a>
         </div>
       </div>
+
+      {rangeControls}
 
       <div className="grid gap-4 sm:grid-cols-3">
         {stats.map((s) => (

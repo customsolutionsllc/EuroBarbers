@@ -44,3 +44,116 @@ body {
 .section {
   @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
 }
+
+/* ---------------------------------------------------------------------------
+   Modern FullCalendar theme (admin calendar)
+   --------------------------------------------------------------------------- */
+.fc-modern {
+  --fc-border-color: hsl(37 18% 88%);
+  --fc-page-bg-color: #fff;
+  --fc-neutral-bg-color: hsl(39 22% 96%);
+  --fc-today-bg-color: hsl(40 64% 45% / 0.06);
+  --fc-now-indicator-color: hsl(40 64% 45%);
+  font-size: 0.875rem;
+}
+
+.fc-modern .fc-toolbar-title {
+  font-family: var(--font-serif, ui-serif), Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.fc-modern .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 1rem;
+}
+
+/* Toolbar buttons */
+.fc-modern .fc-button {
+  background: #fff;
+  border: 1px solid hsl(37 18% 80%);
+  color: hsl(240 6% 18%);
+  font-weight: 500;
+  text-transform: none;
+  box-shadow: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.55rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.fc-modern .fc-button:hover {
+  background: hsl(39 22% 94%);
+  border-color: hsl(40 64% 45%);
+}
+
+.fc-modern .fc-button:focus {
+  box-shadow: 0 0 0 2px hsl(40 64% 45% / 0.3);
+}
+
+.fc-modern .fc-button-primary:not(:disabled).fc-button-active,
+.fc-modern .fc-button-primary:not(:disabled):active {
+  background: hsl(40 64% 45%);
+  border-color: hsl(40 64% 45%);
+  color: #fff;
+}
+
+.fc-modern .fc-button-group > .fc-button {
+  border-radius: 0;
+}
+.fc-modern .fc-button-group > .fc-button:first-child {
+  border-top-left-radius: 0.55rem;
+  border-bottom-left-radius: 0.55rem;
+}
+.fc-modern .fc-button-group > .fc-button:last-child {
+  border-top-right-radius: 0.55rem;
+  border-bottom-right-radius: 0.55rem;
+}
+
+/* Column + resource headers */
+.fc-modern .fc-col-header-cell-cushion,
+.fc-modern .fc-datagrid-cell-cushion {
+  padding: 0.6rem 0.4rem;
+  font-weight: 600;
+  color: hsl(240 5% 30%);
+  text-decoration: none;
+}
+
+.fc-modern .fc-timegrid-axis-cushion,
+.fc-modern .fc-timegrid-slot-label-cushion {
+  color: hsl(240 5% 45%);
+  font-size: 0.75rem;
+}
+
+/* Events */
+.fc-modern .fc-timegrid-event,
+.fc-modern .fc-event {
+  border: none;
+  border-radius: 0.5rem;
+  background: hsl(40 64% 45%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  padding: 1px 2px;
+}
+
+.fc-modern .fc-event .fc-event-main {
+  color: #fff;
+  padding: 2px 4px;
+  font-weight: 500;
+}
+
+.fc-modern .fc-event .fc-event-time {
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.fc-modern .fc-timegrid-now-indicator-line {
+  border-color: hsl(40 64% 45%);
+  border-width: 2px;
+}
+
+.fc-modern .fc-timegrid-now-indicator-arrow {
+  border-color: hsl(40 64% 45%);
+  color: hsl(40 64% 45%);
+}
+
+.fc-modern a.fc-event:hover {
+  filter: brightness(0.96);
+}

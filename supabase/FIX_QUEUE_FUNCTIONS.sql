@@ -1,12 +1,9 @@
--- EuroBarbers — Migration 0004
--- Staff/lobby queue read functions (privacy-scoped) + realtime publication.
--- Barbers cannot read public.customers directly under RLS, so queue listings
--- for staff and the lobby TV are exposed through SECURITY DEFINER functions
--- that return only the fields each audience is allowed to see.
+-- EuroBarbers — Queue/lobby function fix (re-runnable, idempotent).
+-- Fixes the "column reference id is ambiguous" error by aliasing the
+-- shop_settings table inside each function. Safe to run multiple times.
 
 -- ---------------------------------------------------------------------------
--- Staff queue: admins see all of today's active queue (incl. phone); barbers
--- see only their own + First Available items, without phone numbers.
+-- Staff queue (admin/barber dashboard)
 -- ---------------------------------------------------------------------------
 create or replace function public.get_staff_queue()
 returns table (
@@ -41,7 +38,7 @@ begin
     raise exception 'NOT_AUTHORIZED';
   end if;
 
-  select timezone into v_tz from public.shop_settings where shop_settings.id = true;
+  select ss.timezone into v_tz from public.shop_settings ss where ss.id = true;
   v_tz := coalesce(v_tz, 'America/New_York');
   v_today := (now() at time zone v_tz)::date;
 
@@ -77,7 +74,7 @@ end;
 $$;
 
 -- ---------------------------------------------------------------------------
--- Lobby TV queue: token-gated, public-safe (first name + last initial only).
+-- Lobby TV queue (token-gated, public-safe)
 -- ---------------------------------------------------------------------------
 create or replace function public.get_lobby_queue(p_token text)
 returns table (
@@ -100,8 +97,8 @@ declare
   v_tz text;
   v_today date;
 begin
-  select queue_display_token, timezone into v_token, v_tz
-  from public.shop_settings where shop_settings.id = true;
+  select ss.queue_display_token, ss.timezone into v_token, v_tz
+  from public.shop_settings ss where ss.id = true;
 
   if p_token is null or v_token is null or p_token <> v_token then
     raise exception 'INVALID_TOKEN';
@@ -132,8 +129,7 @@ end;
 $$;
 
 -- ---------------------------------------------------------------------------
--- Staff appointments for a given day, privacy-scoped by role.
--- Admins see all (incl. phone); barbers see only their own (no phone).
+-- Staff appointments for a given day (privacy-scoped by role)
 -- ---------------------------------------------------------------------------
 create or replace function public.get_staff_appointments(p_date date default null)
 returns table (
@@ -166,7 +162,7 @@ begin
     raise exception 'NOT_AUTHORIZED';
   end if;
 
-  select timezone into v_tz from public.shop_settings where shop_settings.id = true;
+  select ss.timezone into v_tz from public.shop_settings ss where ss.id = true;
   v_tz := coalesce(v_tz, 'America/New_York');
   v_day := coalesce(p_date, (now() at time zone v_tz)::date);
 
@@ -195,17 +191,3 @@ $$;
 grant execute on function public.get_staff_queue() to authenticated;
 grant execute on function public.get_lobby_queue(text) to anon, authenticated;
 grant execute on function public.get_staff_appointments(date) to authenticated;
-do $$
-begin
-  if not exists (
-    select 1 from pg_publication_tables
-    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'walk_in_queue'
-  ) then
-    alter publication supabase_realtime add table public.walk_in_queue;
-  end if;
-exception
-  when undefined_object then
-    -- supabase_realtime publication not present (e.g. plain Postgres); skip.
-    null;
-end;
-$$;

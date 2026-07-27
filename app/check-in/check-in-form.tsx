@@ -90,19 +90,19 @@ export function CheckInForm({ services, barbers }: CheckInFormProps) {
         <CardHeader>
           <CardTitle>1. Service</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2">
+        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((item) => (
             <button
               type="button"
               key={item.id}
               onClick={() => setServiceId(item.id)}
               className={cn(
-                "rounded-lg border bg-white p-4 text-left transition hover:border-primary",
-                serviceId === item.id && "border-primary ring-2 ring-primary/20"
+                "min-h-[104px] rounded-lg border bg-white p-5 text-left transition hover:border-primary active:scale-[0.99]",
+                serviceId === item.id && "border-primary ring-4 ring-primary/20"
               )}
             >
               <span className="font-serif text-2xl font-semibold">{item.name}</span>
-              <span className="mt-2 block text-sm text-muted-foreground">
+              <span className="mt-2 block text-base text-muted-foreground">
                 {item.duration_minutes} min
               </span>
             </button>
@@ -114,18 +114,18 @@ export function CheckInForm({ services, barbers }: CheckInFormProps) {
         <CardHeader>
           <CardTitle>2. Barber</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2">
+        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <button
             type="button"
             onClick={() => setBarberId("any")}
             className={cn(
-              "rounded-lg border bg-white p-4 text-left",
-              barberId === "any" && "border-primary ring-2 ring-primary/20"
+              "min-h-[120px] rounded-lg border bg-white p-5 text-left transition active:scale-[0.99]",
+              barberId === "any" && "border-primary ring-4 ring-primary/20"
             )}
           >
-            <UserRound className="h-5 w-5 text-primary" />
+            <UserRound className="h-6 w-6 text-primary" />
             <span className="mt-3 block font-serif text-2xl font-semibold">First Available</span>
-            <span className="mt-2 block text-sm text-muted-foreground">Whoever is open first.</span>
+            <span className="mt-2 block text-base text-muted-foreground">Whoever is open first.</span>
           </button>
           {barbers.map((barber) => (
             <button
@@ -133,12 +133,12 @@ export function CheckInForm({ services, barbers }: CheckInFormProps) {
               key={barber.id}
               onClick={() => setBarberId(barber.id)}
               className={cn(
-                "rounded-lg border bg-white p-4 text-left",
-                barberId === barber.id && "border-primary ring-2 ring-primary/20"
+                "min-h-[120px] rounded-lg border bg-white p-5 text-left transition active:scale-[0.99]",
+                barberId === barber.id && "border-primary ring-4 ring-primary/20"
               )}
             >
               <span className="font-serif text-2xl font-semibold">{barber.name}</span>
-              <span className="mt-2 block text-sm text-muted-foreground">{barber.title}</span>
+              <span className="mt-2 block text-base text-muted-foreground">{barber.title}</span>
             </button>
           ))}
         </CardContent>
@@ -150,17 +150,17 @@ export function CheckInForm({ services, barbers }: CheckInFormProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Input name="firstName" placeholder="First name" required />
-            <Input name="lastName" placeholder="Last name" required />
+            <Input name="firstName" placeholder="First name" required className="h-12 text-base" />
+            <Input name="lastName" placeholder="Last name" required className="h-12 text-base" />
           </div>
-          <Input name="phone" type="tel" placeholder="Mobile phone" required />
-          <Input name="email" type="email" placeholder="Email (optional)" />
-          <label className="flex items-start gap-2 text-xs text-muted-foreground">
+          <Input name="phone" type="tel" placeholder="Mobile phone" required className="h-12 text-base" />
+          <Input name="email" type="email" placeholder="Email (optional)" className="h-12 text-base" />
+          <label className="flex items-start gap-3 text-sm text-muted-foreground">
             <input
               type="checkbox"
               checked={smsConsent}
               onChange={(event) => setSmsConsent(event.target.checked)}
-              className="mt-0.5 h-4 w-4"
+              className="mt-0.5 h-6 w-6 shrink-0"
             />
             <span>
               Text me when I&apos;m next in line. Message and data rates may apply. Reply STOP to opt

@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
+import { looksLikeEmail, usernameToEmail } from "@/lib/staff-auth";
 
 export function LoginForm() {
   const router = useRouter();
@@ -19,15 +20,16 @@ export function LoginForm() {
     setStatus("saving");
     setMessage("");
     const form = new FormData(event.currentTarget);
-    const email = String(form.get("email") ?? "");
+    const identifier = String(form.get("identifier") ?? "").trim();
     const password = String(form.get("password") ?? "");
+    const email = looksLikeEmail(identifier) ? identifier : usernameToEmail(identifier);
 
     const supabase = createBrowserSupabaseClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setStatus("error");
-      setMessage("Invalid email or password.");
+      setMessage("Invalid username/email or password.");
       return;
     }
 
@@ -37,7 +39,14 @@ export function LoginForm() {
 
   return (
     <form onSubmit={submit} className="mt-6 space-y-4">
-      <Input name="email" type="email" placeholder="Email" autoComplete="email" required />
+      <Input
+        name="identifier"
+        type="text"
+        placeholder="Username or email"
+        autoComplete="username"
+        autoCapitalize="none"
+        required
+      />
       <Input
         name="password"
         type="password"
