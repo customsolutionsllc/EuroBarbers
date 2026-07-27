@@ -43,10 +43,10 @@ export default function HomePage() {
         <Image
           src="/logo2.png"
           alt="EuroBarbers"
-          width={180}
-          height={180}
+          width={288}
+          height={288}
           priority
-          className="mb-10 h-36 w-36 rounded-full object-contain shadow-2xl ring-1 ring-gold-400/30 sm:h-44 sm:w-44"
+          className="mb-10 h-52 w-52 rounded-full object-contain shadow-2xl ring-1 ring-gold-400/30 sm:h-64 sm:w-64"
         />
 
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-gold-200 sm:text-sm">
