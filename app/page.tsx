@@ -41,12 +41,12 @@ export default function HomePage() {
       {/* Content */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center">
         <Image
-          src="/logo2.png"
+          src="/logo-t.png"
           alt="EuroBarbers"
-          width={288}
-          height={288}
+          width={512}
+          height={768}
           priority
-          className="mb-10 h-52 w-52 rounded-full object-contain shadow-2xl ring-1 ring-gold-400/30 sm:h-64 sm:w-64"
+          className="mb-10 h-56 w-auto object-contain drop-shadow-2xl sm:h-72"
         />
 
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-gold-200 sm:text-sm">
