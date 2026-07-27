@@ -46,7 +46,7 @@ export default function HomePage() {
           width={512}
           height={768}
           priority
-          className="mb-10 h-56 w-auto object-contain drop-shadow-2xl sm:h-72"
+          className="mb-10 h-72 w-auto object-contain drop-shadow-2xl sm:h-96"
         />
 
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-gold-200 sm:text-sm">
