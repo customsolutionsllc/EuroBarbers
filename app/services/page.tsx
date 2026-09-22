@@ -21,7 +21,7 @@ export default function ServicesPage() {
           Each service includes consultation time and buffer time so the calendar stays realistic.
         </p>
       </div>
-      <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 flex max-w-3xl flex-col gap-4">
         {services.map((service) => <ServiceCard key={service.id} service={service} />)}
       </div>
       <Button asChild className="mt-10" size="lg">

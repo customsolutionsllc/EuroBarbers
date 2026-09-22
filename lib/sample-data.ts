@@ -5,7 +5,8 @@ export const services = [
     duration: 30,
     buffer: 5,
     price: 3000,
-    description: "Consultation, precision cut, and clean finish."
+    description:
+      "A tailored consultation followed by precision scissor and clipper work, neck and edge detailing, and a clean finish styled exactly how you like it."
   },
   {
     id: "kids-haircut",
@@ -13,7 +14,8 @@ export const services = [
     duration: 30,
     buffer: 5,
     price: 2500,
-    description: "Patient, friendly cuts for younger clients."
+    description:
+      "Patient, friendly cuts for younger clients — gentle clipper and scissor work with a clean, easy-to-maintain style and a comfortable experience."
   },
   {
     id: "beard-shave-shape",
@@ -21,7 +23,8 @@ export const services = [
     duration: 20,
     buffer: 5,
     price: 2000,
-    description: "Beard shape-up, line-up, and conditioning."
+    description:
+      "Beard shape-up and line-up with hot-towel prep, straight-razor edging, and conditioning for a crisp, well-defined finish."
   },
   {
     id: "hair-wash",
@@ -29,7 +32,8 @@ export const services = [
     duration: 15,
     buffer: 5,
     price: 1000,
-    description: "Cleansing wash and refresh."
+    description:
+      "A relaxing cleanse and scalp refresh with a thorough rinse and towel dry — great on its own or paired with any cut."
   }
 ];
 

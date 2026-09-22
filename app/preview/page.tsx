@@ -68,7 +68,7 @@ export default function HomePage() {
           </div>
           <Button asChild variant="outline"><Link href="/services">All services</Link></Button>
         </div>
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="flex max-w-3xl flex-col gap-4">
           {services.map((service) => <ServiceCard key={service.id} service={service} />)}
         </div>
       </MotionSection>
