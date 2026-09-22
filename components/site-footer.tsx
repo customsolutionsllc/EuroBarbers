@@ -34,10 +34,7 @@ export function SiteFooter() {
           <p className="font-semibold">Visit</p>
           <div className="mt-3 space-y-2 text-sm text-white/70">
             <Link href="/book" className="block hover:text-white">
-              Book online
-            </Link>
-            <Link href="/check-in" className="block hover:text-white">
-              Walk-in check-in
+              Booking
             </Link>
             <Link href="/services" className="block hover:text-white">
               Services

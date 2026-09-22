@@ -6,8 +6,7 @@ const nav = [
   ["Services", "/services"],
   ["Team", "/team"],
   ["Gallery", "/gallery"],
-  ["Book", "/book"],
-  ["Check-in", "/check-in"]
+  ["Book", "/book"]
 ];
 
 export function SiteHeader() {
@@ -18,10 +17,10 @@ export function SiteHeader() {
           <Image
             src="/logo-t.png"
             alt="EuroBarbers"
-            width={80}
-            height={120}
+            width={100}
+            height={150}
             priority
-            className="h-11 w-auto object-contain"
+            className="h-14 w-auto object-contain"
           />
           <span className="font-serif text-2xl font-semibold">EuroBarbers</span>
         </Link>
