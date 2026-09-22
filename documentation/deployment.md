@@ -62,8 +62,11 @@ For each admin/barber:
    [environment-variables.md](./environment-variables.md)). At minimum:
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
    `NEXT_PUBLIC_SITE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
-3. Add email vars (`RESEND_API_KEY`, `BOOKING_CONFIRMATION_FROM`) to enable
-   confirmation emails.
+3. Add email vars (`RESEND_API_KEY`, `BOOKING_CONFIRMATION_FROM`) using a verified
+   Resend sender. These are required for hiring/contact form delivery as well as
+   booking confirmations. Verify the recipient `Info@Eurobarbers.com` receives a
+   controlled test before publishing these forms; a successful build alone does
+   not establish email delivery.
 4. Deploy. Marketing pages are static; booking, check-in, dashboards, and the
    lobby display are server-rendered on demand.
 

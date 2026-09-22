@@ -9,6 +9,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/services",
     "/book",
     "/check-in",
+    "/we-are-hiring",
+    "/contact-us",
     "/columbus-oh-barber-shop",
     "/dublin-oh-barber-shop",
     "/terms",

@@ -44,6 +44,12 @@ export function SiteFooter() {
             <Link href="/services" className="block hover:text-white">
               Services
             </Link>
+            <Link href="/we-are-hiring" className="block hover:text-white">
+              We are Hiring
+            </Link>
+            <Link href="/contact-us" className="block hover:text-white">
+              Contact Us
+            </Link>
           </div>
         </div>
         <div className="flex justify-center md:justify-end">

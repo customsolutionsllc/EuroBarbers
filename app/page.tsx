@@ -20,7 +20,7 @@ export default function HomePage() {
             <p className="mb-5 text-sm font-semibold uppercase tracking-[0.28em] text-gold-200">
               Columbus & Dublin, Ohio
             </p>
-            <h1 className="font-serif text-5xl font-semibold leading-[0.95] tracking-normal sm:text-7xl lg:text-8xl">
+            <h1 className="font-serif text-4xl font-semibold leading-[0.95] tracking-normal min-[360px]:text-5xl sm:text-7xl lg:text-8xl">
               EuroBarbers
               <span className="mt-5 block font-sans text-2xl leading-snug tracking-normal sm:text-3xl">Your barber shop in Columbus, Ohio</span>
             </h1>
@@ -33,6 +33,9 @@ export default function HomePage() {
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white/35 text-white hover:bg-white/10">
                 <Link href="/services">View services</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white/35 text-white hover:bg-white/10">
+                <Link href="/we-are-hiring">We are Hiring</Link>
               </Button>
             </div>
           </div>

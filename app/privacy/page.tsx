@@ -11,19 +11,21 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="June 22, 2026">
+    <LegalPage title="Privacy Policy" updated="September 22, 2026">
       <p>
         This Privacy Policy explains how {siteConfig.name} collects, uses, and protects your
-        information when you use our website, online booking, and walk-in check-in. This page is a
-        starting template and should be reviewed by legal counsel before launch.
+        information when you use our website, online booking, walk-in check-in, contact forms,
+        and job applications. This page should be reviewed by legal counsel before launch.
       </p>
 
       <h2>Information we collect</h2>
       <ul>
         <li>Your name and phone number when you book or check in.</li>
-        <li>Your email address, only if you choose to provide one.</li>
+        <li>Your email address if you provide one for booking or check-in; it is required for contact messages and job applications.</li>
         <li>Appointment, visit, and queue history for your service.</li>
         <li>Your consent preferences for text messages and marketing.</li>
+        <li>Your name, phone number, email address, and description when you contact us.</li>
+        <li>Your name, phone number, email address, and uploaded resume when you apply for a role.</li>
       </ul>
 
       <h2>How we use your information</h2>
@@ -32,6 +34,7 @@ export default function PrivacyPage() {
         <li>To send transactional notifications (such as a &ldquo;you are next&rdquo; text) when you opt in.</li>
         <li>To send appointment confirmation emails when you provide an email address.</li>
         <li>To understand visit trends and improve our service.</li>
+        <li>To respond to your messages and review job applications.</li>
       </ul>
 
       <h2>Text messages</h2>
@@ -45,6 +48,11 @@ export default function PrivacyPage() {
         We do not sell your personal information. We share data only with service providers that
         help us operate (for example, our scheduling database, email provider, and SMS provider),
         and only as needed to deliver the Services.
+      </p>
+      <p>
+        Contact messages and job applications, including uploaded resumes, are delivered to our
+        team through our email provider. Please include only information relevant to your message
+        or application.
       </p>
 
       <h2>Data retention and security</h2>
@@ -66,6 +74,8 @@ export default function PrivacyPage() {
         {fullAddress()}
         <br />
         <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>
+        <br />
+        <a href="mailto:Info@Eurobarbers.com">Info@Eurobarbers.com</a>
       </p>
     </LegalPage>
   );
