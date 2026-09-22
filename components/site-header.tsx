@@ -43,10 +43,12 @@ export function SiteHeader() {
           <Image
             src="/logo-t.png"
             alt="EuroBarbers"
-            width={180}
-            height={270}
+            width={240}
+            height={360}
             priority
-            className="h-24 w-auto object-contain"
+            className={`w-auto object-contain transition-all duration-300 ${
+              overDark ? "h-48 self-start" : "h-24"
+            }`}
           />
           <span
             className={`font-serif text-2xl font-semibold transition-colors ${
