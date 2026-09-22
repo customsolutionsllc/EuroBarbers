@@ -47,12 +47,6 @@ export default function HomePage() {
         </div>
 
         <ServiceShowcase />
-
-        <div className="mt-12 text-center">
-          <Button asChild variant="outline">
-            <Link href="/services">View all services &amp; pricing</Link>
-          </Button>
-        </div>
       </MotionSection>
     </main>
   );
