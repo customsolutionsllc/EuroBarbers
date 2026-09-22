@@ -5,10 +5,10 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink-900 text-white">
+    <footer className="bg-ink-600 text-white">
       <div
         aria-hidden
-        className="h-20 bg-gradient-to-b from-background to-ink-900"
+        className="h-20 bg-gradient-to-b from-background to-ink-600"
       />
       <div className="section grid gap-8 pb-12 pt-2 md:grid-cols-4">
         <div className="md:col-span-2">
