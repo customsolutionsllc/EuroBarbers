@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 
 const nav = [
   ["Home", "/preview"],
-  ["Services", "/services"],
-  ["Team", "/team"]
+  ["Services", "/services"]
 ];
 
 export function SiteHeader() {
@@ -57,28 +56,30 @@ export function SiteHeader() {
             EuroBarbers
           </span>
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
-          {nav.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              className={`text-sm font-medium transition-colors ${
-                overDark
-                  ? "text-gold-200/90 hover:text-white"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <Button
-          asChild
-          variant={overDark ? "outline" : "default"}
-          className={overDark ? "border-white/40 text-white hover:bg-white/10" : ""}
-        >
-          <Link href="/book">Reserve</Link>
-        </Button>
+        <div className="flex items-center gap-6">
+          <nav className="hidden items-center gap-6 md:flex">
+            {nav.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                className={`text-sm font-medium transition-colors ${
+                  overDark
+                    ? "text-gold-200/90 hover:text-white"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+          <Button
+            asChild
+            variant={overDark ? "outline" : "default"}
+            className={overDark ? "border-white/40 text-white hover:bg-white/10" : ""}
+          >
+            <Link href="/book">Reserve</Link>
+          </Button>
+        </div>
       </div>
     </header>
   );
