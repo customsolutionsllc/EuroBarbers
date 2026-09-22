@@ -53,9 +53,9 @@ export function SiteFooter() {
           <Image
             src="/logo1.png"
             alt="EuroBarbers"
-            width={280}
-            height={420}
-            className="h-44 w-auto object-contain md:h-56"
+            width={320}
+            height={480}
+            className="h-56 w-auto object-contain md:h-72"
           />
         </div>
       </div>

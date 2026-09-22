@@ -45,7 +45,7 @@ export function SiteHeader() {
             height={360}
             priority
             className={`w-auto object-contain transition-all duration-300 ${
-              overDark ? "h-48 self-start" : "h-24"
+              overDark ? "h-48 self-start mt-3" : "h-24"
             }`}
           />
           <span
