@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MotionSection } from "@/components/motion-section";
 import { ServiceShowcase } from "@/components/service-showcase";
-import { siteConfig, fullAddress } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -35,8 +35,6 @@ export default function HomePage() {
                 <Link href="/services">View services</Link>
               </Button>
             </div>
-            <p className="mt-8 text-white/80">{fullAddress()} · {siteConfig.hoursLabel}</p>
-            <a href={siteConfig.phoneHref} className="mt-3 inline-block text-gold-200 underline underline-offset-4">Call {siteConfig.phone}</a>
           </div>
         </div>
       </section>

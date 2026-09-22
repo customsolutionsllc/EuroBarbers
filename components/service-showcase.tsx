@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { services } from "@/lib/sample-data";
@@ -33,6 +33,7 @@ const serviceMedia: Record<string, { image: string; alt: string; seo: string }> 
 };
 
 export function ServiceShowcase() {
+  const reduceMotion = useReducedMotion();
   return (
     <div className="space-y-14 overflow-x-clip md:space-y-20">
       {services.map((service, i) => {
@@ -43,8 +44,8 @@ export function ServiceShowcase() {
             key={service.id}
             className="grid items-center gap-8 md:grid-cols-2 md:gap-12"
             initial={false}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            whileInView={reduceMotion ? { opacity: 1, x: 0 } : { opacity: [0, 1], x: [reverse ? 120 : -120, 0] }}
+            viewport={{ once: true, margin: "0px 0px 80px 0px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div className={reverse ? "md:order-2" : ""}>
