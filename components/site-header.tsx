@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Scissors } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const nav = [
@@ -15,9 +15,14 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-background/92 backdrop-blur">
       <div className="section flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-ink-900 text-gold-200">
-            <Scissors className="h-5 w-5" />
-          </span>
+          <Image
+            src="/logo-t.png"
+            alt="EuroBarbers"
+            width={80}
+            height={120}
+            priority
+            className="h-11 w-auto object-contain"
+          />
           <span className="font-serif text-2xl font-semibold">EuroBarbers</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
