@@ -13,7 +13,7 @@ const nav = [
 
 export function SiteHeader() {
   const pathname = usePathname() ?? "";
-  const isHome = pathname === "/preview" || pathname === "/";
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const BARE_PREFIXES = ["/queue-display", "/login", "/admin", "/barber"];
 // Exact routes that render full-screen without the public header/footer.
-const BARE_EXACT = ["/"];
+const BARE_EXACT = ["/construction"];
 
 /**
  * Renders the public site header/footer around page content, except on
