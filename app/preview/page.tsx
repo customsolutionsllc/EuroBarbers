@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MotionSection } from "@/components/motion-section";
 import { formatCurrency } from "@/lib/utils";
-import { gallery, services, staff } from "@/lib/sample-data";
+import { services } from "@/lib/sample-data";
 
 const serviceMedia: Record<string, { image: string; alt: string; seo: string }> = {
   "mens-haircut": {
@@ -35,8 +35,8 @@ const serviceMedia: Record<string, { image: string; alt: string; seo: string }> 
 export default function HomePage() {
   return (
     <main>
-      <section className="grain min-h-[calc(100vh-4rem)] text-white">
-        <div className="section flex min-h-[calc(100vh-4rem)] items-center py-20">
+      <section className="grain -mt-28 min-h-screen text-white">
+        <div className="section flex min-h-screen items-center pb-20 pt-28">
           <div className="max-w-3xl">
             <p className="mb-5 text-sm font-semibold uppercase tracking-[0.28em] text-gold-200">
               Columbus & Dublin, Ohio
@@ -102,29 +102,6 @@ export default function HomePage() {
           </Button>
         </div>
       </MotionSection>
-
-      <MotionSection className="section py-16">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {staff.map((barber) => (
-            <article key={barber.id} className="overflow-hidden rounded-lg border bg-white">
-              <img src={barber.image} alt={barber.name} className="h-80 w-full object-cover" />
-              <div className="p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-primary">{barber.title}</p>
-                <h3 className="mt-2 font-serif text-3xl font-semibold">{barber.name}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{barber.specialties.join(" / ")}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </MotionSection>
-
-      <section className="py-16">
-        <div className="section grid grid-cols-2 gap-4 md:grid-cols-3">
-          {gallery.map((src) => (
-            <img key={src} src={src} alt="Barber shop work" className="aspect-[4/3] rounded-lg object-cover" />
-          ))}
-        </div>
-      </section>
     </main>
   );
 }
