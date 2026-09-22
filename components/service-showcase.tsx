@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { services } from "@/lib/sample-data";
 
@@ -33,7 +34,7 @@ const serviceMedia: Record<string, { image: string; alt: string; seo: string }> 
 
 export function ServiceShowcase() {
   return (
-    <div className="space-y-14 md:space-y-20">
+    <div className="space-y-14 overflow-x-clip md:space-y-20">
       {services.map((service, i) => {
         const media = serviceMedia[service.id];
         const reverse = i % 2 === 1;
@@ -41,7 +42,7 @@ export function ServiceShowcase() {
           <motion.div
             key={service.id}
             className="grid items-center gap-8 md:grid-cols-2 md:gap-12"
-            initial={{ opacity: 0, x: reverse ? 120 : -120 }}
+            initial={false}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -57,9 +58,12 @@ export function ServiceShowcase() {
             </div>
             <div className={reverse ? "md:order-1" : ""}>
               {media ? (
-                <img
+                <Image
                   src={media.image}
                   alt={media.alt}
+                  width={800}
+                  height={600}
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="aspect-[4/3] w-full rounded-xl object-cover shadow-lg"
                 />
               ) : null}

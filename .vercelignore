@@ -1,0 +1,11 @@
+.git/
+.vercel/
+node_modules/
+.next/
+.env*
+*.tsbuildinfo
+owner_accounts.MD
+SITE_URLS.md
+supabase/
+scripts/
+documentation/

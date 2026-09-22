@@ -1,13 +1,12 @@
 # Database Schema
 
 The schema lives in `supabase/migrations/` and is the **source of truth**. Apply
-migrations in order (`0001` → `0005`). See [deployment.md](./deployment.md) for
+migrations in order (`0001` → `0009`). See [deployment.md](./deployment.md) for
 how to apply them.
 
-> **Note:** As of writing, migrations have not been applied to a live Supabase
-> project from this environment (no CLI/Docker/Postgres available locally). They
-> are validated by review and by the app's TypeScript build. See
-> [open-questions.md](./open-questions.md).
+> **Verification:** Migrations through `0009` were executed on isolated local
+> PostgreSQL with Supabase-style auth helpers, including SQL authorization
+> regressions. Hosted Supabase state remains unverified and was not modified.
 
 ## Tables
 

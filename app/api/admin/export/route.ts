@@ -9,7 +9,9 @@ function toCsv(rows: Record<string, unknown>[]): string {
   const headers = Object.keys(rows[0]);
   const escape = (value: unknown) => {
     const str = value === null || value === undefined ? "" : String(value);
-    return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+    // Spreadsheet programs evaluate formulas even inside quoted CSV fields.
+    const safe = /^[\s\u0000-\u001f]*[=+@-]|^[\t\r\n]/.test(str) ? `'${str}` : str;
+    return /[",\r\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
   };
   const lines = [headers.join(",")];
   for (const row of rows) {
@@ -78,7 +80,8 @@ export async function GET(request: Request) {
     status: 200,
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="${filename}"`
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "private, no-store"
     }
   });
 }

@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { readJsonRequest } from "@/lib/http";
 
 const CheckInSchema = z.object({
-  serviceId: z.string().min(1),
-  preferredBarberId: z.string().min(1).nullable().optional(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  phone: z.string().min(7),
-  email: z.string().email().optional().or(z.literal("")),
+  serviceId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/),
+  preferredBarberId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/).nullable().optional(),
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  phone: z.string().trim().min(7).max(30).regex(/^\+?[0-9().\s-]+$/),
+  email: z.string().trim().max(254).email().optional().or(z.literal("")),
   smsConsent: z.boolean(),
   marketingConsent: z.boolean().optional()
 });
@@ -29,7 +30,9 @@ function friendlyMessage(raw: string) {
 }
 
 export async function POST(request: Request) {
-  const parsed = CheckInSchema.safeParse(await request.json());
+  const body = await readJsonRequest(request);
+  if (body.response) return body.response;
+  const parsed = CheckInSchema.safeParse(body.data);
 
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid check-in details." }, { status: 400 });
@@ -63,9 +66,9 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Check-in failed." },
+      { error: "Check-in failed. Please see the front desk." },
       { status: 500 }
     );
   }

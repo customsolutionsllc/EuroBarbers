@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { CheckInForm } from "./check-in-form";
 import { getActiveBarbers, getActiveServices, getShopPublic } from "@/lib/queries";
+import { siteConfig } from "@/lib/site-config";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Walk-in Check-in",
-  description: "Join the EuroBarbers walk-in queue from your phone."
+  description: "Join the EuroBarbers walk-in queue from your phone.",
+  alternates: { canonical: "/check-in" },
+  openGraph: { url: "/check-in", images: [siteConfig.socialImage] }
 };
 
 export default async function CheckInPage() {
@@ -34,7 +37,7 @@ export default async function CheckInPage() {
           <div className="rounded-lg border bg-amber-50 p-8 text-center">
             <h2 className="font-serif text-3xl font-semibold">Walk-in check-in is currently closed.</h2>
             <p className="mt-3 text-muted-foreground">
-              Please check back during open hours, or book an appointment online.
+              Please check back during open hours, or call the shop to arrange an appointment.
             </p>
           </div>
         )}

@@ -4,7 +4,9 @@ import { siteConfig, fullAddress } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: `Terms of Service for ${siteConfig.name}.`
+  description: `Terms of Service for ${siteConfig.name}.`,
+  alternates: { canonical: "/terms" },
+  openGraph: { url: "/terms", images: [siteConfig.socialImage] }
 };
 
 export default function TermsPage() {

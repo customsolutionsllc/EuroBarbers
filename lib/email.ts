@@ -1,3 +1,4 @@
+import "server-only";
 import { Resend } from "resend";
 
 type BookingEmail = {
@@ -8,6 +9,12 @@ type BookingEmail = {
   startsAt: string;
 };
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[character]!);
+}
+
 export async function sendBookingConfirmation(booking: BookingEmail) {
   if (!process.env.RESEND_API_KEY || !booking.to) {
     return;
@@ -16,7 +23,8 @@ export async function sendBookingConfirmation(booking: BookingEmail) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const when = new Intl.DateTimeFormat("en-US", {
     dateStyle: "full",
-    timeStyle: "short"
+    timeStyle: "short",
+    timeZone: "America/New_York"
   }).format(new Date(booking.startsAt));
 
   await resend.emails.send({
@@ -26,8 +34,8 @@ export async function sendBookingConfirmation(booking: BookingEmail) {
     html: `
       <div style="font-family:Arial,sans-serif;line-height:1.6;color:#151518">
         <h1>Your appointment is confirmed</h1>
-        <p>Hi ${booking.customerName},</p>
-        <p>Your ${booking.serviceName} with ${booking.barberName} is booked for <strong>${when}</strong>.</p>
+        <p>Hi ${escapeHtml(booking.customerName)},</p>
+        <p>Your ${escapeHtml(booking.serviceName)} with ${escapeHtml(booking.barberName)} is booked for <strong>${escapeHtml(when)}</strong>.</p>
         <p>EuroBarbers<br/>7370 Sawmill Road, Columbus, Ohio</p>
       </div>
     `

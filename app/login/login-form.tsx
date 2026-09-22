@@ -11,7 +11,10 @@ import { looksLikeEmail, usernameToEmail } from "@/lib/staff-auth";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/admin";
+  const requestedRedirect = searchParams.get("redirect") ?? "";
+  const redirectTo = /^\/(?:admin|barber)(?:\/[a-zA-Z0-9_-]+)*\/?$/.test(requestedRedirect)
+    ? requestedRedirect
+    : "/admin";
   const [status, setStatus] = useState<"idle" | "saving" | "error">("idle");
   const [message, setMessage] = useState("");
 

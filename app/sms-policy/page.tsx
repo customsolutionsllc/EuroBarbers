@@ -4,7 +4,9 @@ import { siteConfig, fullAddress } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "SMS / Messaging Policy",
-  description: `Text messaging (SMS) policy for ${siteConfig.name}.`
+  description: `Text messaging (SMS) policy for ${siteConfig.name}.`,
+  alternates: { canonical: "/sms-policy" },
+  openGraph: { url: "/sms-policy", images: [siteConfig.socialImage] }
 };
 
 export default function SmsPolicyPage() {

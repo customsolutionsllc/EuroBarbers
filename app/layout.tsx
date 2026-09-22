@@ -4,7 +4,7 @@ import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SiteChrome } from "@/components/site-chrome";
-import { siteConfig, fullAddress } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -23,42 +23,34 @@ export const metadata: Metadata = {
     template: "%s | EuroBarbers"
   },
   description:
-    "Luxury barber shop for precision fades, beard work, and classic grooming in Columbus, Ohio. Book online or join the walk-in queue.",
+    "Men's haircuts, kids' cuts and beard grooming at EuroBarbers, 7370 Sawmill Road, Columbus, OH. Serving Dublin too. Walk in or call 614-900-6080.",
   metadataBase: new URL(siteConfig.url),
-  alternates: { canonical: "/" },
-  keywords: [
-    "barber shop Columbus",
-    "barber shop Dublin OH",
-    "skin fade Columbus",
-    "beard trim",
-    "hot towel shave",
-    "men's haircut"
-  ],
+  icons: { icon: "/icon.png", apple: "/apple-icon.png" },
   openGraph: {
-    title: "EuroBarbers | Columbus, OH Barber Shop",
-    description: "Premium barbering, online booking, and walk-in queue in Columbus, Ohio.",
     type: "website",
-    url: siteConfig.url,
+    images: [siteConfig.socialImage],
     siteName: siteConfig.name,
     locale: "en_US"
   },
   twitter: {
     card: "summary_large_image",
-    title: "EuroBarbers | Columbus, OH Barber Shop",
-    description: "Premium barbering, online booking, and walk-in queue in Columbus, Ohio."
+    images: ["/opengraph-image"]
   }
 };
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
-  "@type": "BarberShop",
+  "@type": "HairSalon",
+  "@id": `${siteConfig.url}/#business`,
   name: siteConfig.name,
   description:
     "Luxury barber shop for precision fades, beard work, and classic grooming in Columbus, Ohio.",
   url: siteConfig.url,
   telephone: siteConfig.phoneHref.replace("tel:", ""),
-  email: siteConfig.email,
   priceRange: "$$",
+  image: `${siteConfig.url}/opengraph-image`,
+  logo: `${siteConfig.url}/icon.png`,
+  hasMap: siteConfig.mapsUrl,
   address: {
     "@type": "PostalAddress",
     streetAddress: siteConfig.address.street,
@@ -67,10 +59,13 @@ const localBusinessJsonLd = {
     postalCode: siteConfig.address.zip,
     addressCountry: "US"
   },
-  areaServed: siteConfig.serviceAreas.map((a) => a.label.replace(", OH", "")),
-  openingHours: "Mo-Su 10:00-19:00",
-  // Aggregate address string for crawlers that prefer a flat field.
-  knowsAbout: fullAddress()
+  areaServed: siteConfig.serviceAreas.map((area) => ({ "@type": "City", name: area.label })),
+  openingHoursSpecification: [{
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: siteConfig.hours.opens,
+    closes: siteConfig.hours.closes
+  }]
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -79,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${serif.variable} ${sans.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd).replace(/</g, "\\u003c") }}
         />
         <SiteChrome header={<SiteHeader />} footer={<SiteFooter />}>
           {children}

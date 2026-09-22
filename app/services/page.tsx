@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { MotionSection } from "@/components/motion-section";
 import { ServiceShowcase } from "@/components/service-showcase";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Services & Pricing",
   description:
     "Men's haircuts, kids' cuts, beard shaping, and hair wash at EuroBarbers on Sawmill Road in Columbus, Ohio.",
-  alternates: { canonical: "/services" }
+  alternates: { canonical: "/services" },
+  openGraph: { url: "/services", images: [siteConfig.socialImage] }
 };
 
 export default function ServicesPage() {
@@ -33,7 +35,7 @@ export default function ServicesPage() {
 
         <div className="mt-12 text-center">
           <Button asChild size="lg" variant="outline">
-            <Link href="/team">Meet the team</Link>
+            <Link href="/book">Plan your visit</Link>
           </Button>
         </div>
       </MotionSection>

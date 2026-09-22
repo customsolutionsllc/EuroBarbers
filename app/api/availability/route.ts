@@ -3,9 +3,9 @@ import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const QuerySchema = z.object({
-  serviceId: z.string().min(1),
-  barberId: z.string().min(1).nullable().optional(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+  serviceId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/),
+  barberId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/).nullable().optional(),
+  date: z.string().date()
 });
 
 export async function GET(request: Request) {
@@ -29,16 +29,16 @@ export async function GET(request: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: "Availability lookup failed." }, { status: 503 });
     }
 
     // De-duplicate ISO timestamps across barbers (first-available view).
     const slots = Array.from(new Set((data as string[] | null) ?? [])).sort();
 
     return NextResponse.json({ slots });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Availability lookup failed." },
+      { error: "Availability lookup failed." },
       { status: 500 }
     );
   }

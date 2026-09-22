@@ -1,8 +1,8 @@
-﻿-- ===== 0001_initial_schema.sql =====
+-- ===== 0001_initial_schema.sql =====
 
--- EuroBarbers â€” Initial schema
+-- EuroBarbers — Initial schema
 -- Rebuilds the database around customers / appointments / check-ins / queue,
--- per the approved requirements (decisions #1, #5, #11â€“#18).
+-- per the approved requirements (decisions #1, #5, #11–#18).
 -- Safe to run on a fresh Supabase Postgres database.
 
 -- ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ create table if not exists public.shop_settings (
   reminder_24h_enabled boolean not null default true,
   reminder_2h_enabled boolean not null default true,
   queue_sms_enabled boolean not null default true,
-  -- TV lobby display token (decision #4) â€” never exposed publicly
+  -- TV lobby display token (decision #4) — never exposed publicly
   queue_display_token text not null default encode(gen_random_bytes(16), 'hex'),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -247,7 +247,7 @@ create trigger trg_appointments_updated
   for each row execute function public.set_updated_at();
 
 -- ---------------------------------------------------------------------------
--- check_ins (one row per visit â€” the basis for reporting)
+-- check_ins (one row per visit — the basis for reporting)
 -- ---------------------------------------------------------------------------
 create table if not exists public.check_ins (
   id uuid primary key default gen_random_uuid(),
@@ -334,7 +334,7 @@ create index if not exists idx_sms_logs_customer on public.sms_logs (customer_id
 create index if not exists idx_sms_logs_type on public.sms_logs (sms_type);
 
 -- ---------------------------------------------------------------------------
--- profiles (auth roles: admin / barber) â€” decision #3
+-- profiles (auth roles: admin / barber) — decision #3
 -- ---------------------------------------------------------------------------
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -373,11 +373,9 @@ as $$
   select barber_id from public.profiles where id = auth.uid();
 $$;
 
-
-
 -- ===== 0002_functions_and_rls.sql =====
 
--- EuroBarbers â€” Functions, views, and Row Level Security
+-- EuroBarbers — Functions, views, and Row Level Security
 -- Depends on 0001_initial_schema.sql.
 
 -- ===========================================================================
@@ -967,7 +965,7 @@ as $$
 $$;
 
 -- ===========================================================================
--- Lobby display view (safe â€” first name + last initial only)
+-- Lobby display view (safe — first name + last initial only)
 -- ===========================================================================
 create or replace view public.lobby_queue_view as
 select
@@ -1054,11 +1052,9 @@ grant execute on function public.join_walk_in_queue(text, text, text, text, text
 grant execute on function public.update_walk_in_status(uuid, text, uuid) to authenticated;
 grant execute on function public.take_next_customer(uuid) to authenticated;
 
-
-
 -- ===== 0003_seed.sql =====
 
--- EuroBarbers â€” Seed data (placeholder values; editable in admin).
+-- EuroBarbers — Seed data (placeholder values; editable in admin).
 -- Decisions #6 (single location), #7 (Elis real + placeholders), #8 (placeholder prices).
 
 -- Shop settings (singleton)
@@ -1082,8 +1078,8 @@ on conflict (slug) do nothing;
 insert into public.barbers (slug, name, title, bio, specialties, is_active, sort_order)
 values
   ('elis',  'Elis',          'Master Barber',  'EuroBarbers'' founding master barber, known for precision fades and classic European styling.', array['Skin fades','Classic cuts','Beard sculpting'], true, 1),
-  ('barber-two', 'Barber Two', 'Barber',        'Placeholder profile â€” update in the admin dashboard.', array['Fades','Line-ups'], true, 2),
-  ('barber-three','Barber Three','Barber',       'Placeholder profile â€” update in the admin dashboard.', array['Beards','Tapers'], true, 3)
+  ('barber-two', 'Barber Two', 'Barber',        'Placeholder profile — update in the admin dashboard.', array['Fades','Line-ups'], true, 2),
+  ('barber-three','Barber Three','Barber',       'Placeholder profile — update in the admin dashboard.', array['Beards','Tapers'], true, 3)
 on conflict (slug) do nothing;
 
 -- Every barber can perform every service (adjust later in admin).
@@ -1091,18 +1087,16 @@ insert into public.barber_services (barber_id, service_id)
 select b.id, s.id from public.barbers b cross join public.services s
 on conflict do nothing;
 
--- Weekly availability: open 10:00â€“19:00 every day (placeholder; adjust per barber).
+-- Weekly availability: open 10:00–19:00 every day (placeholder; adjust per barber).
 insert into public.barber_availability (barber_id, day_of_week, start_time, end_time, is_available)
 select b.id, d.dow, time '10:00', time '19:00', true
 from public.barbers b
 cross join generate_series(0, 6) as d(dow)
 on conflict (barber_id, day_of_week, start_time, end_time) do nothing;
 
-
-
 -- ===== 0004_queue_views_and_realtime.sql =====
 
--- EuroBarbers â€” Migration 0004
+-- EuroBarbers — Migration 0004
 -- Staff/lobby queue read functions (privacy-scoped) + realtime publication.
 -- Barbers cannot read public.customers directly under RLS, so queue listings
 -- for staff and the lobby TV are exposed through SECURITY DEFINER functions
@@ -1314,11 +1308,9 @@ exception
 end;
 $$;
 
-
-
 -- ===== 0005_reports.sql =====
 
--- EuroBarbers â€” Migration 0005
+-- EuroBarbers — Migration 0005
 -- Admin reporting aggregates (admin-only, privacy-safe counts).
 
 create or replace function public.get_admin_reports(
@@ -1410,11 +1402,9 @@ $$;
 
 grant execute on function public.get_admin_reports(date, date) to authenticated;
 
-
-
 -- ===== 0006_schedule_management.sql =====
 
--- EuroBarbers â€” Migration 0006
+-- EuroBarbers — Migration 0006
 -- Admin schedule management: weekly availability + time off, via SECURITY
 -- DEFINER functions that enforce admin-only access and compute timestamps in
 -- the shop timezone (DST-safe). The booking engine (get_available_slots) and
@@ -1590,11 +1580,9 @@ grant execute on function public.admin_add_time_off(uuid, text, text, boolean, t
 grant execute on function public.admin_delete_time_off(uuid) to authenticated;
 grant execute on function public.admin_set_barber_active(uuid, boolean) to authenticated;
 
-
-
 -- ===== 0007_service_management.sql =====
 
--- EuroBarbers â€” Migration 0007
+-- EuroBarbers — Migration 0007
 -- Admin-only service management RPCs (create / update). SECURITY DEFINER so the
 -- admin dashboard can edit services without relying on table-level RLS.
 
@@ -1691,11 +1679,9 @@ $$;
 grant execute on function public.admin_update_service(uuid, text, integer, integer, integer, boolean) to authenticated;
 grant execute on function public.admin_create_service(text, integer, integer, integer) to authenticated;
 
-
-
 -- ===== 0008_barber_and_service_management.sql =====
 
--- EuroBarbers â€” Migration 0008
+-- EuroBarbers — Migration 0008
 -- Admin-only service delete + full barber management (create / update / delete).
 -- SECURITY DEFINER, enforce is_admin(). Friendly errors when a row still has
 -- history (foreign keys) so the UI can suggest deactivating instead.
@@ -1728,7 +1714,7 @@ $$;
 
 -- ---------------------------------------------------------------------------
 -- Create a barber. Generates a unique slug, links every service, and seeds a
--- default 10:00â€“19:00 weekly schedule (editable afterwards). Returns new id.
+-- default 10:00–19:00 weekly schedule (editable afterwards). Returns new id.
 -- ---------------------------------------------------------------------------
 create or replace function public.admin_create_barber(
   p_name text,
@@ -1849,5 +1835,471 @@ grant execute on function public.admin_create_barber(text, text, text, text[]) t
 grant execute on function public.admin_update_barber(uuid, text, text, text, text[]) to authenticated;
 grant execute on function public.admin_delete_barber(uuid) to authenticated;
 
+-- ===== 0009_security_hardening.sql =====
+
+-- EuroBarbers — close anonymous database access and enforce booking windows.
+-- Apply after 0008; no customer data is deleted.
+
+create or replace function public.get_available_slots(
+  p_service_id text,
+  p_barber_id text,
+  p_date date
+)
+returns setof timestamptz
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare
+  v_tz text;
+  v_interval integer;
+  v_min_notice integer;
+  v_max_days integer;
+  v_service services%rowtype;
+  v_total_minutes integer;
+  v_dow integer;
+  v_barber record;
+  v_avail record;
+  v_slot_start timestamptz;
+  v_slot_end timestamptz;
+  v_window_end timestamptz;
+  v_now timestamptz := now();
+begin
+  select timezone, slot_interval_minutes, min_notice_minutes, max_days_ahead
+    into v_tz, v_interval, v_min_notice, v_max_days
+  from public.shop_settings where id = true;
+
+  v_tz := coalesce(v_tz, 'America/New_York');
+  v_interval := coalesce(v_interval, 15);
+  v_min_notice := coalesce(v_min_notice, 30);
+  if p_date is null or p_date < (v_now at time zone v_tz)::date
+    or p_date > (v_now at time zone v_tz)::date + coalesce(v_max_days, 60) then
+    return;
+  end if;
+
+  select * into v_service
+  from public.services
+  where is_active = true and (id::text = p_service_id or slug = p_service_id)
+  limit 1;
+  if not found then
+    return;
+  end if;
+
+  v_total_minutes := v_service.duration_minutes + v_service.buffer_after_minutes;
+  v_dow := extract(dow from p_date);
+
+  for v_barber in
+    select b.id
+    from public.barbers b
+    join public.barber_services bs on bs.barber_id = b.id and bs.service_id = v_service.id
+    where b.is_active = true
+      and (p_barber_id is null or b.id::text = p_barber_id or b.slug = p_barber_id)
+  loop
+    for v_avail in
+      select start_time, end_time
+      from public.barber_availability
+      where barber_id = v_barber.id
+        and day_of_week = v_dow
+        and is_available = true
+    loop
+      v_slot_start := (p_date + v_avail.start_time) at time zone v_tz;
+      v_window_end := (p_date + v_avail.end_time) at time zone v_tz;
+      while v_slot_start + make_interval(mins => v_total_minutes) <= v_window_end loop
+        v_slot_end := v_slot_start + make_interval(mins => v_total_minutes);
+
+        if v_slot_start >= v_now + make_interval(mins => v_min_notice)
+          and not exists (
+            select 1 from public.appointments a
+            where a.barber_id = v_barber.id
+              and a.status in ('scheduled', 'confirmed', 'completed')
+              and a.time_range && tstzrange(v_slot_start, v_slot_end, '[)')
+          )
+          and not exists (
+            select 1 from public.barber_time_off t
+            where t.barber_id = v_barber.id
+              and t.time_range && tstzrange(v_slot_start, v_slot_end, '[)')
+          )
+        then
+          return next v_slot_start;
+        end if;
+
+        v_slot_start := v_slot_start + make_interval(mins => v_interval);
+      end loop;
+    end loop;
+  end loop;
+
+  return;
+end;
+$$;
+
+create or replace function public.create_appointment(
+  p_service_id text,
+  p_barber_id text,
+  p_first_name text,
+  p_last_name text,
+  p_phone text,
+  p_email text,
+  p_starts_at timestamptz,
+  p_transactional_consent boolean default true,
+  p_marketing_consent boolean default false,
+  p_notes text default null
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_service services%rowtype;
+  v_barber barbers%rowtype;
+  v_tz text;
+  v_min_notice integer;
+  v_max_days integer;
+  v_date date;
+  v_total_minutes integer;
+  v_ends_at timestamptz;
+  v_dow integer;
+  v_customer_id uuid;
+  v_appt appointments%rowtype;
+begin
+  select timezone, min_notice_minutes, max_days_ahead into v_tz, v_min_notice, v_max_days
+  from public.shop_settings where id = true;
+  v_tz := coalesce(v_tz, 'America/New_York');
+  v_min_notice := coalesce(v_min_notice, 30);
+  if p_starts_at is null or not isfinite(p_starts_at) then
+    raise exception 'INVALID_START';
+  end if;
+  v_date := (p_starts_at at time zone v_tz)::date;
+  if v_date > (now() at time zone v_tz)::date + coalesce(v_max_days, 60) then
+    raise exception 'TOO_FAR_AHEAD';
+  end if;
+
+  select * into v_service
+  from public.services
+  where is_active = true and (id::text = p_service_id or slug = p_service_id)
+  limit 1;
+  if not found then
+    raise exception 'SERVICE_UNAVAILABLE';
+  end if;
+
+  v_total_minutes := v_service.duration_minutes + v_service.buffer_after_minutes;
+  v_ends_at := p_starts_at + make_interval(mins => v_total_minutes);
+  v_dow := extract(dow from (p_starts_at at time zone v_tz));
+
+  if p_starts_at < now() + make_interval(mins => v_min_notice) then
+    raise exception 'TOO_SOON';
+  end if;
+
+  -- Resolve barber: specific, or first available for this service/time.
+  if p_barber_id is not null then
+    select b.* into v_barber
+    from public.barbers b
+    join public.barber_services bs on bs.barber_id = b.id and bs.service_id = v_service.id
+    where b.is_active = true and (b.id::text = p_barber_id or b.slug = p_barber_id)
+    limit 1;
+    if not found then
+      raise exception 'BARBER_UNAVAILABLE';
+    end if;
+  else
+    select b.* into v_barber
+    from public.barbers b
+    join public.barber_services bs on bs.barber_id = b.id and bs.service_id = v_service.id
+    where b.is_active = true
+      and exists (
+        select 1 from public.barber_availability a
+        where a.barber_id = b.id and a.day_of_week = v_dow and a.is_available = true
+          and p_starts_at >= (v_date + a.start_time) at time zone v_tz
+          and v_ends_at <= (v_date + a.end_time) at time zone v_tz
+      )
+      and not exists (
+        select 1 from public.barber_time_off t
+        where t.barber_id = b.id and t.time_range && tstzrange(p_starts_at, v_ends_at, '[)')
+      )
+      and not exists (
+        select 1 from public.appointments a
+        where a.barber_id = b.id and a.status in ('scheduled', 'confirmed', 'completed')
+          and a.time_range && tstzrange(p_starts_at, v_ends_at, '[)')
+      )
+    order by b.sort_order, b.name
+    limit 1;
+    if not found then
+      raise exception 'NO_BARBER_AVAILABLE';
+    end if;
+  end if;
+
+  -- Working hours: full service must fit inside the barber's window (decision #12).
+  if not exists (
+    select 1 from public.barber_availability a
+    where a.barber_id = v_barber.id and a.day_of_week = v_dow and a.is_available = true
+      and p_starts_at >= (v_date + a.start_time) at time zone v_tz
+      and v_ends_at <= (v_date + a.end_time) at time zone v_tz
+  ) then
+    raise exception 'OUTSIDE_HOURS';
+  end if;
+
+  if exists (
+    select 1 from public.barber_time_off t
+    where t.barber_id = v_barber.id and t.time_range && tstzrange(p_starts_at, v_ends_at, '[)')
+  ) then
+    raise exception 'BARBER_OFF';
+  end if;
+
+  v_customer_id := public.upsert_customer(
+    p_first_name, p_last_name, p_phone, p_email,
+    p_transactional_consent, p_marketing_consent, 'booking_page'
+  );
+
+  begin
+    insert into public.appointments (
+      customer_id, barber_id, service_id, appointment_start, appointment_end, status, notes
+    )
+    values (
+      v_customer_id, v_barber.id, v_service.id, p_starts_at, v_ends_at, 'confirmed', p_notes
+    )
+    returning * into v_appt;
+  exception when exclusion_violation then
+    raise exception 'SLOT_TAKEN';
+  end;
+
+  return jsonb_build_object(
+    'id', v_appt.id,
+    'service_name', v_service.name,
+    'barber_name', v_barber.name,
+    'barber_slug', v_barber.slug,
+    'starts_at', v_appt.appointment_start,
+    'ends_at', v_appt.appointment_end,
+    'status', v_appt.status
+  );
+end;
+$$;
+
+create or replace function public.update_walk_in_status(
+  p_queue_id uuid,
+  p_status text,
+  p_served_by_barber_id uuid default null
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_q walk_in_queue%rowtype;
+  v_served uuid;
+  v_barber uuid := public.current_barber_id();
+  v_admin boolean := public.is_admin();
+begin
+  if (auth.uid() is not null and (v_admin or v_barber is not null)) is not true then
+    raise exception 'NOT_AUTHORIZED';
+  end if;
+  if p_status is null or p_status not in ('waiting', 'next', 'in_chair', 'completed', 'canceled', 'no_show') then
+    raise exception 'INVALID_STATUS';
+  end if;
+
+  select * into v_q from public.walk_in_queue where id = p_queue_id for update;
+  if not found then
+    raise exception 'QUEUE_ITEM_NOT_FOUND';
+  end if;
+
+  -- Authorization: admins, or a barber acting on their own / First Available item.
+  if (v_admin or (v_barber is not null and (
+    v_q.barber_id = v_barber
+    or (v_q.barber_id is null and (v_q.preferred_barber_id is null or v_q.preferred_barber_id = v_barber))
+  ))) is not true then
+    raise exception 'NOT_AUTHORIZED';
+  end if;
+  if not v_admin and p_served_by_barber_id is not null and p_served_by_barber_id <> v_barber then
+    raise exception 'NOT_AUTHORIZED';
+  end if;
+
+  v_served := coalesce(p_served_by_barber_id, v_q.served_by_barber_id);
+  if p_status = 'in_chair' and v_served is null then
+    v_served := public.current_barber_id();
+  end if;
+
+  update public.walk_in_queue set
+    status = p_status,
+    served_by_barber_id = v_served,
+    barber_id = coalesce(v_served, barber_id),
+    called_at = case when p_status = 'next' and called_at is null then now() else called_at end,
+    started_at = case when p_status = 'in_chair' and started_at is null then now() else started_at end,
+    completed_at = case when p_status = 'completed' then now() else completed_at end
+  where id = p_queue_id
+  returning * into v_q;
+
+  update public.check_ins set
+    status = p_status,
+    served_by_barber_id = coalesce(v_served, served_by_barber_id),
+    barber_id = coalesce(v_served, barber_id),
+    completed_at = case when p_status = 'completed' then now() else completed_at end,
+    canceled_at = case when p_status = 'canceled' then now() else canceled_at end,
+    no_show_at = case when p_status = 'no_show' then now() else no_show_at end
+  where id = v_q.check_in_id;
+
+  perform public.recalc_queue_positions();
+
+  return jsonb_build_object(
+    'id', v_q.id,
+    'status', v_q.status,
+    'served_by_barber_id', v_q.served_by_barber_id,
+    'next_sms_sent', v_q.next_sms_sent
+  );
+end;
+$$;
+
+create or replace function public.take_next_customer(p_barber_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_tz text;
+  v_today date;
+  v_queue_id uuid;
+begin
+  if (auth.uid() is not null and p_barber_id is not null and (
+    public.is_admin() or public.current_barber_id() = p_barber_id
+  )) is not true then
+    raise exception 'NOT_AUTHORIZED';
+  end if;
+
+  select timezone into v_tz from public.shop_settings where id = true;
+  v_tz := coalesce(v_tz, 'America/New_York');
+  v_today := (now() at time zone v_tz)::date;
+
+  -- 1) earliest waiting assigned to this barber
+  select id into v_queue_id
+  from public.walk_in_queue
+  where status = 'waiting'
+    and (checked_in_at at time zone v_tz)::date = v_today
+    and (barber_id = p_barber_id or (barber_id is null and preferred_barber_id = p_barber_id))
+  order by position, checked_in_at
+  limit 1 for update skip locked;
+
+  -- 2) otherwise earliest waiting First Available
+  if v_queue_id is null then
+    select id into v_queue_id
+    from public.walk_in_queue
+    where status = 'waiting'
+      and (checked_in_at at time zone v_tz)::date = v_today
+      and barber_id is null and preferred_barber_id is null
+    order by position, checked_in_at
+    limit 1 for update skip locked;
+  end if;
+
+  if v_queue_id is null then
+    return jsonb_build_object('found', false);
+  end if;
+
+  -- Mark as "next" and assign this barber so the queue-next SMS can be sent.
+  return (public.update_walk_in_status(v_queue_id, 'next', p_barber_id)) || jsonb_build_object('found', true);
+end;
+$$;
+
+create or replace function public.upsert_customer(
+  p_first_name text,
+  p_last_name text,
+  p_phone text,
+  p_email text,
+  p_transactional_consent boolean,
+  p_marketing_consent boolean,
+  p_marketing_source text
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_id uuid;
+begin
+  select id into v_id
+  from public.customers
+  where normalized_first_name = public.normalize_name(p_first_name)
+    and normalized_last_name = public.normalize_name(p_last_name)
+    and normalized_phone = public.normalize_phone(p_phone)
+  limit 1;
+
+  if v_id is null then
+    insert into public.customers (
+      first_name, last_name, phone, email,
+      sms_transactional_consent, sms_transactional_consent_at,
+      sms_marketing_consent, sms_marketing_consent_at, sms_marketing_consent_source,
+      last_seen_at
+    )
+    values (
+      btrim(p_first_name), btrim(p_last_name), btrim(p_phone), nullif(btrim(coalesce(p_email, '')), ''),
+      coalesce(p_transactional_consent, false),
+      case when p_transactional_consent then now() end,
+      coalesce(p_marketing_consent, false),
+      case when p_marketing_consent then now() end,
+      case when p_marketing_consent then p_marketing_source end,
+      now()
+    )
+    returning id into v_id;
+  else
+    -- An unauthenticated booking is not proof of ownership of an existing contact.
+    -- Keep saved contact/consent unchanged; trusted staff can update it separately.
+    update public.customers set last_seen_at = now() where id = v_id;
+  end if;
+
+  return v_id;
+end;
+$$;
 
 
+-- Default PUBLIC execution is inherited by every API role; explicit grants
+-- alone never restricted these SECURITY DEFINER entry points.
+do $$
+declare
+  fn record;
+begin
+  for fn in
+    select p.oid::regprocedure as signature, p.proname as name
+    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.proname = any(array[
+      'upsert_customer', 'recalc_queue_positions', 'create_appointment',
+      'join_walk_in_queue', 'get_available_slots', 'update_walk_in_status',
+      'take_next_customer', 'get_staff_queue', 'get_staff_appointments',
+      'get_admin_reports', 'admin_set_barber_day', 'admin_add_time_off',
+      'admin_delete_time_off', 'admin_set_barber_active', 'admin_update_service',
+      'admin_create_service', 'admin_delete_service', 'admin_create_barber',
+      'admin_update_barber', 'admin_delete_barber', 'get_shop_public',
+      'get_lobby_queue', 'is_admin', 'current_barber_id'
+    ])
+  loop
+    execute format('revoke execute on function %s from public, anon, authenticated, service_role', fn.signature);
+    execute format('alter function %s set search_path = public, pg_temp', fn.signature);
+    if fn.name in ('create_appointment', 'join_walk_in_queue', 'get_available_slots') then
+      execute format('grant execute on function %s to service_role', fn.signature);
+    elsif fn.name in ('get_shop_public', 'get_lobby_queue', 'is_admin', 'current_barber_id') then
+      execute format('grant execute on function %s to anon, authenticated, service_role', fn.signature);
+    elsif fn.name not in ('upsert_customer', 'recalc_queue_positions') then
+      execute format('grant execute on function %s to authenticated', fn.signature);
+    end if;
+  end loop;
+end;
+$$;
+
+revoke create on schema public from public, anon, authenticated;
+
+-- Keep direct reads role-scoped, including rows without an assigned barber.
+drop policy if exists check_ins_barber_read on public.check_ins;
+create policy check_ins_barber_read on public.check_ins for select to authenticated
+  using (public.current_barber_id() is not null and (
+    barber_id = public.current_barber_id()
+    or (barber_id is null and (preferred_barber_id is null or preferred_barber_id = public.current_barber_id()))
+  ));
+
+drop policy if exists queue_barber_read on public.walk_in_queue;
+create policy queue_barber_read on public.walk_in_queue for select to authenticated
+  using (public.current_barber_id() is not null and (
+    barber_id = public.current_barber_id()
+    or (barber_id is null and (preferred_barber_id is null or preferred_barber_id = public.current_barber_id()))
+  ));
+
+-- No application caller uses this legacy owner-rights view. The lobby must
+-- use get_lobby_queue(token), which verifies the display token.
+drop view if exists public.lobby_queue_view;

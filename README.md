@@ -21,10 +21,10 @@ Copy-Item .env.example .env.local
 
 ## Database
 
-Run `supabase/schema.sql` in Supabase SQL Editor. The important safety rule is enforced in PostgreSQL:
+Apply `supabase/migrations/` in order through `0009_security_hardening.sql` (see `documentation/deployment.md`). Existing databases already at `0008` need only the security migration, not a seed reset. The important booking safety rule is enforced in PostgreSQL:
 
 ```sql
-EXCLUDE USING gist (staff_id WITH =, time_range WITH &&)
+EXCLUDE USING gist (barber_id WITH =, time_range WITH &&)
 ```
 
 That rejects overlapping bookings for the same barber even if two requests arrive at the same time.
@@ -46,7 +46,7 @@ That rejects overlapping bookings for the same barber even if two requests arriv
 
 ## Notes
 
-- The public booking flow calls `/api/bookings`, which delegates booking creation to the Supabase RPC `create_booking`.
+- `/book` currently offers phone booking and walk-in directions. The retained booking API delegates to `create_appointment`; online booking is not mounted on the public page.
 - Email confirmation uses Resend when `RESEND_API_KEY` is present.
 - Twilio is intentionally left for a later reminder worker.
 - FullCalendar resource views may require a commercial Scheduler license for production use.

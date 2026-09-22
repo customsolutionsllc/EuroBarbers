@@ -2,14 +2,15 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { sendBookingConfirmation } from "@/lib/email";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { readJsonRequest } from "@/lib/http";
 
 const BookingSchema = z.object({
-  serviceId: z.string().min(1),
-  barberId: z.string().min(1).nullable().optional(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  customerPhone: z.string().min(7),
-  customerEmail: z.string().email().optional().or(z.literal("")),
+  serviceId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/),
+  barberId: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/).nullable().optional(),
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  customerPhone: z.string().trim().min(7).max(30).regex(/^\+?[0-9().\s-]+$/),
+  customerEmail: z.string().trim().max(254).email().optional().or(z.literal("")),
   startsAt: z.string().datetime(),
   smsConsent: z.boolean().optional(),
   marketingConsent: z.boolean().optional(),
@@ -24,6 +25,7 @@ const FRIENDLY_ERRORS: Record<string, string> = {
   OUTSIDE_HOURS: "That time is outside the barber's working hours.",
   BARBER_OFF: "The barber is unavailable at that time.",
   TOO_SOON: "That time is too soon to book. Please pick a later slot.",
+  TOO_FAR_AHEAD: "That date is too far ahead. Please choose a closer date.",
   SLOT_TAKEN: "Sorry, that slot was just booked. Please choose another time."
 };
 
@@ -37,7 +39,9 @@ function friendlyMessage(raw: string) {
 }
 
 export async function POST(request: Request) {
-  const parsed = BookingSchema.safeParse(await request.json());
+  const body = await readJsonRequest(request);
+  if (body.response) return body.response;
+  const parsed = BookingSchema.safeParse(body.data);
 
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid booking details." }, { status: 400 });
@@ -77,9 +81,9 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ booking: data }, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Booking failed." },
+      { error: "Booking failed. Please contact the shop or try again later." },
       { status: 500 }
     );
   }

@@ -1,17 +1,13 @@
 /**
  * Single source of truth for the shop's public business details (NAP),
- * hours, and SEO service areas. Reflects the locked product decisions:
- * one physical location, 10 AM–7 PM, America/New_York.
- *
- * Placeholder values are noted; replace before launch (see open-questions.md).
+ * hours, and service areas. One physical location in America/New_York.
+ * Keep these details aligned with the verified Google Business Profile.
  */
 export const siteConfig = {
   name: "EuroBarbers",
-  tagline: "Precision cuts, beard craft, and a private-club booking experience.",
+  tagline: "Precision haircuts and beard grooming on Sawmill Road in Columbus, Ohio.",
   phone: "614-900-6080",
   phoneHref: "tel:+16149006080",
-  // Placeholder until confirmed.
-  email: "hello@eurobarbers.com",
   address: {
     street: "7370 Sawmill Road",
     city: "Columbus",
@@ -19,9 +15,22 @@ export const siteConfig = {
     zip: "43235"
   },
   timezone: "America/New_York",
-  // Open daily 11 AM–8 PM.
-  hoursLabel: "Open daily 11 AM – 8 PM",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://eurobarbers.com",
+  hours: { opens: "11:00", closes: "20:00" },
+  get hoursLabel() {
+    const format = (time: string) => {
+      const [hour, minute] = time.split(":").map(Number);
+      return `${hour % 12 || 12}${minute ? `:${String(minute).padStart(2, "0")}` : ""} ${hour >= 12 ? "PM" : "AM"}`;
+    };
+    return `Open daily ${format(this.hours.opens)} – ${format(this.hours.closes)}`;
+  },
+  url: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://eurobarbers.com").origin,
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=EuroBarbers%207370%20Sawmill%20Road%20Columbus%20OH%2043235",
+  socialImage: {
+    url: "/opengraph-image",
+    width: 1200,
+    height: 630,
+    alt: "EuroBarbers — Columbus, Ohio barber shop"
+  },
   // SEO service areas (not separate locations).
   serviceAreas: [
     { label: "Columbus, OH", href: "/columbus-oh-barber-shop" },

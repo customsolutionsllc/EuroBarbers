@@ -8,11 +8,10 @@ export const metadata: Metadata = {
   title: "Booking",
   description:
     "Online booking is not available yet. Walk-ins are welcome, or call EuroBarbers in Columbus, Ohio to book your appointment.",
-  alternates: { canonical: "/book" }
+  alternates: { canonical: "/book" },
+  openGraph: { url: "/book", images: [siteConfig.socialImage] }
 };
 
-const MAPS_URL =
-  "https://www.google.com/maps/place/Euro+Barbers/@40.1154364,-83.0903418,19.5z/data=!4m15!1m8!3m7!1s0x8838ed5b2b0700df:0x79a9e11dfaf1692e!2s7370+Sawmill+Rd,+Columbus,+OH+43235!3b1!8m2!3d40.1153922!4d-83.0894883!16s%2Fg%2F11bw3xbnwz!3m5!1s0x8838edebfe54ba7f:0x577a7db05427fb0a!8m2!3d40.1159669!4d-83.089484!16s%2Fg%2F11zh45v248?entry=ttu";
 
 export default function BookPage() {
   return (
@@ -36,7 +35,7 @@ export default function BookPage() {
             </a>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <a href={MAPS_URL} target="_blank" rel="noopener noreferrer">
+            <a href={siteConfig.mapsUrl} target="_blank" rel="noopener noreferrer">
               <MapPin className="h-4 w-4" />
               Get directions
             </a>

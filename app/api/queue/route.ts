@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getCurrentProfile } from "@/lib/auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { sendQueueNextSms } from "@/lib/sms";
+import { readJsonRequest } from "@/lib/http";
 
 const ActionSchema = z.discriminatedUnion("action", [
   z.object({
@@ -22,7 +23,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });
   }
 
-  const parsed = ActionSchema.safeParse(await request.json());
+  const body = await readJsonRequest(request);
+  if (body.response) return body.response;
+  const parsed = ActionSchema.safeParse(body.data);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const nav = [
-  ["Home", "/preview"],
+  ["Home", "/"],
   ["Services", "/services"]
 ];
 
@@ -37,7 +37,7 @@ export function SiteHeader() {
       }`}
     >
       <div className="section flex h-28 items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3">
           <Image
             src="/logo-t.png"
             alt="EuroBarbers"
@@ -45,11 +45,11 @@ export function SiteHeader() {
             height={360}
             priority
             className={`w-auto object-contain transition-all duration-300 ${
-              overDark ? "h-48 self-start mt-3" : "h-24"
+              overDark ? "h-28 self-start mt-3 sm:h-48" : "h-20 sm:h-24"
             }`}
           />
           <span
-            className={`font-serif text-2xl font-semibold transition-colors ${
+            className={`font-serif text-lg font-semibold transition-colors sm:text-2xl ${
               overDark ? "text-gold-200" : "text-foreground"
             }`}
           >

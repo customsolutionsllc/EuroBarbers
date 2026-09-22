@@ -6,8 +6,9 @@ import { staff } from "@/lib/sample-data";
 export const metadata: Metadata = {
   title: "Our Barbers",
   description:
-    "Meet the master barbers at EuroBarbers in Columbus, Ohio. Book your preferred barber online or join the walk-in queue.",
-  alternates: { canonical: "/team" }
+    "Learn about EuroBarbers on Sawmill Road in Columbus, Ohio.",
+  alternates: { canonical: "/team" },
+  robots: { index: false, follow: true }
 };
 
 export default function TeamPage() {

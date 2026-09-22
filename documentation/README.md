@@ -25,9 +25,8 @@ these files explain how the system is designed and built.
 
 ## Status
 
-All documentation files in the index above are written. One item is pending
-real-world execution: the database migrations have not yet been applied to a
-live Supabase project from this environment (no Supabase CLI / Docker / local
-Postgres available here). The migrations in `supabase/migrations/` are the
-source of truth and are validated by review and the app's TypeScript build; see
-[deployment.md](./deployment.md) and [open-questions.md](./open-questions.md).
+Migrations through `0009` were executed on isolated local PostgreSQL with
+Supabase-style auth helpers. Security regressions exercise actual SQL roles,
+RLS and booking bounds. Hosted Supabase Auth/Realtime and production deployment
+remain separate verification steps; see [deployment.md](./deployment.md) and
+[security.md](./security.md).
