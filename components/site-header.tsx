@@ -7,10 +7,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const nav = [
+  ["Home", "/preview"],
   ["Services", "/services"],
-  ["Team", "/team"],
-  ["Gallery", "/gallery"],
-  ["Book", "/book"]
+  ["Team", "/team"]
 ];
 
 export function SiteHeader() {
