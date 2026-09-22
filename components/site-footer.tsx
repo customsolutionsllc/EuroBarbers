@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig, fullAddress } from "@/lib/site-config";
 
 export function SiteFooter() {
@@ -10,7 +11,7 @@ export function SiteFooter() {
         aria-hidden
         className="h-20 bg-gradient-to-b from-background to-ink-600"
       />
-      <div className="section grid gap-8 pb-12 pt-2 md:grid-cols-4">
+      <div className="section grid gap-8 pb-12 pt-2 md:grid-cols-5 md:items-center">
         <div className="md:col-span-2">
           <p className="font-serif text-3xl font-semibold">{siteConfig.name}</p>
           <p className="mt-3 max-w-md text-sm text-white/70">{siteConfig.tagline}</p>
@@ -47,6 +48,15 @@ export function SiteFooter() {
               Team
             </Link>
           </div>
+        </div>
+        <div className="flex justify-center md:justify-end">
+          <Image
+            src="/logo1.png"
+            alt="EuroBarbers"
+            width={200}
+            height={300}
+            className="h-32 w-auto object-contain md:h-40"
+          />
         </div>
       </div>
       <div className="border-t border-white/10">
