@@ -26,11 +26,15 @@ export function SiteChrome({
     BARE_EXACT.includes(pathname) ||
     BARE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
+  if (bare) {
+    return <>{children}</>;
+  }
+
   return (
-    <>
-      {bare ? null : header}
-      {children}
-      {bare ? null : footer}
-    </>
+    <div className="flex min-h-screen flex-col">
+      {header}
+      <div className="flex-1">{children}</div>
+      {footer}
+    </div>
   );
 }

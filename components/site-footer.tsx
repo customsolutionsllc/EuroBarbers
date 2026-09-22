@@ -5,8 +5,12 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t bg-ink-900 text-white">
-      <div className="section grid gap-8 py-12 md:grid-cols-4">
+    <footer className="bg-ink-900 text-white">
+      <div
+        aria-hidden
+        className="h-20 bg-gradient-to-b from-background to-ink-900"
+      />
+      <div className="section grid gap-8 pb-12 pt-2 md:grid-cols-4">
         <div className="md:col-span-2">
           <p className="font-serif text-3xl font-semibold">{siteConfig.name}</p>
           <p className="mt-3 max-w-md text-sm text-white/70">{siteConfig.tagline}</p>
