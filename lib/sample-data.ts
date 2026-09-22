@@ -4,56 +4,32 @@ export const services = [
     name: "Men's Haircut",
     duration: 30,
     buffer: 5,
-    price: 3500,
+    price: 3000,
     description: "Consultation, precision cut, and clean finish."
   },
   {
-    id: "skin-fade",
-    name: "Skin Fade",
-    duration: 45,
-    buffer: 10,
-    price: 4000,
-    description: "Tight skin fade with razor detailing and styling."
-  },
-  {
-    id: "beard-trim",
-    name: "Beard Trim",
-    duration: 20,
-    buffer: 5,
-    price: 2000,
-    description: "Beard shape-up, line-up, and conditioning."
-  },
-  {
-    id: "haircut-beard",
-    name: "Haircut + Beard",
-    duration: 50,
-    buffer: 10,
-    price: 5000,
-    description: "Full haircut paired with a tailored beard sculpt."
-  },
-  {
     id: "kids-haircut",
-    name: "Kids Haircut",
+    name: "Kids Haircut (0-12)",
     duration: 30,
     buffer: 5,
     price: 2500,
     description: "Patient, friendly cuts for younger clients."
   },
   {
-    id: "hot-towel-shave",
-    name: "Hot Towel Shave",
-    duration: 30,
+    id: "beard-shave-shape",
+    name: "Beard Shave / Shape",
+    duration: 20,
     buffer: 5,
-    price: 3500,
-    description: "Traditional hot towel straight-razor shave."
+    price: 2000,
+    description: "Beard shape-up, line-up, and conditioning."
   },
   {
-    id: "lineup",
-    name: "Lineup",
+    id: "hair-wash",
+    name: "Hair Wash",
     duration: 15,
     buffer: 5,
-    price: 1500,
-    description: "Crisp hairline and edge-up."
+    price: 1000,
+    description: "Cleansing wash and refresh."
   }
 ];
 
