@@ -6,6 +6,6 @@ node_modules/
 *.tsbuildinfo
 owner_accounts.MD
 SITE_URLS.md
-supabase/
-scripts/
-documentation/
+/supabase/
+/scripts/
+/documentation/
